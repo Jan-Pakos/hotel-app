@@ -1,8 +1,19 @@
 import { Routes } from '@angular/router';
+import { Home } from './home/home';
+import { ReservationList } from './reservation-list/reservation-list';
+import { ReservationForm } from './reservation-form/reservation-form';
 
 export const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./home/home.routes').then(m => m.homeRoutes)
+    component: Home
+  },
+  {
+    path: 'reservations',
+    component: ReservationList
+  },
+  {
+    path: 'reservations/new',
+    component: ReservationForm
   }
 ];
