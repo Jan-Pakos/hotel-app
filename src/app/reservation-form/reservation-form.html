@@ -1,16 +1,15 @@
 <div class="form-container">
   <h2>New Reservation</h2>
-  <form class="reservation-form">
+  <form class="reservation-form" [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="guestName">Guest Name</label>
-      <input type="text" id="guestName" name="guestName" placeholder="Enter guest name" required>
+      <input type="text" id="guestName" formControlName="guestName" placeholder="Enter guest name">
     </div>
 
     <div class="form-group">
       <label for="guestEmail">Guest Email</label>
-      <input type="email" id="guestEmail" name="guestEmail" placeholder="Enter guest email"
-             [(ngModel)]="guestEmail" #emailInput="ngModel" required email>
-      @if (emailInput.invalid && emailInput.touched) {
+      <input type="email" id="guestEmail" formControlName="guestEmail" placeholder="Enter guest email">
+      @if (reservationForm.get('guestEmail')?.invalid && reservationForm.get('guestEmail')?.touched) {
         <span class="error">Please enter a valid email address.</span>
       }
     </div>
@@ -18,20 +17,20 @@
     <div class="form-row">
       <div class="form-group">
         <label for="checkInDate">Check-in Date</label>
-        <input type="date" id="checkInDate" name="checkInDate" required>
+        <input type="date" id="checkInDate" formControlName="checkInDate">
       </div>
 
       <div class="form-group">
         <label for="checkOutDate">Check-out Date</label>
-        <input type="date" id="checkOutDate" name="checkOutDate" required>
+        <input type="date" id="checkOutDate" formControlName="checkOutDate">
       </div>
     </div>
 
     <div class="form-group">
       <label for="roomNumber">Room Number</label>
-      <input type="number" id="roomNumber" name="roomNumber" placeholder="Enter room number" required>
+      <input type="number" id="roomNumber" formControlName="roomNumber" placeholder="Enter room number">
     </div>
 
-    <button type="submit" (click)="onSubmit()">Create Reservation</button>
+    <button type="submit">Create Reservation</button>
   </form>
 </div>
