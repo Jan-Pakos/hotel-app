@@ -16,7 +16,7 @@ export class ReservationForm implements OnInit {
   ngOnInit() {
     this.reservationForm = this.fb.group({
       guestEmail: ['', [Validators.required, Validators.email]],
-      guestName: ['', Validators.required],
+      guestName: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s'-]+$/)]],
       checkInDate: ['', Validators.required],
       checkOutDate: ['', Validators.required],
       roomNumber: ['', [Validators.required, Validators.min(1)]]

@@ -4,6 +4,9 @@
     <div class="form-group">
       <label for="guestName">Guest Name</label>
       <input type="text" id="guestName" formControlName="guestName" placeholder="Enter guest name">
+      @if (reservationForm.get('guestName')?.invalid && reservationForm.get('guestName')?.touched) {
+        <span class="error">Name must contain only letters, spaces, hyphens, or apostrophes.</span>
+      }
     </div>
 
     <div class="form-group">
