@@ -21,11 +21,17 @@
       <div class="form-group">
         <label for="checkInDate">Check-in Date</label>
         <input type="date" id="checkInDate" formControlName="checkInDate">
+        @if (reservationForm.get('checkInDate')?.invalid && reservationForm.get('checkInDate')?.touched) {
+          <span class="error">Check-in date is required.</span>
+        }
       </div>
 
       <div class="form-group">
         <label for="checkOutDate">Check-out Date</label>
         <input type="date" id="checkOutDate" formControlName="checkOutDate">
+        @if (reservationForm.get('checkOutDate')?.invalid && reservationForm.get('checkOutDate')?.touched) {
+          <span class="error">Check-out date is required.</span>
+        }
       </div>
     </div>
 
@@ -34,6 +40,6 @@
       <input type="number" id="roomNumber" formControlName="roomNumber" placeholder="Enter room number">
     </div>
 
-    <button type="submit">Create Reservation</button>
+    <button type="submit" [disabled]="reservationForm.invalid">Create Reservation</button>
   </form>
 </div>
