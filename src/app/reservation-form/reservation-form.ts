@@ -29,8 +29,9 @@ export class ReservationForm implements OnInit {
   onSubmit() {
     if (this.reservationForm.valid) {
       const reservation = this.reservationForm.value;
-      this.reservationService.addReservation(reservation);
-      this.reservationForm.reset();
+      this.reservationService.addReservation(reservation).subscribe(() => {
+        this.reservationForm.reset();
+      });
     }
   }
 }

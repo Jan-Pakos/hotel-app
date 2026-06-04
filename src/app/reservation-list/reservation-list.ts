@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReservationService } from '../reservation/reservation.service';
 import { Reservation } from '../models/reservation';
@@ -9,10 +9,14 @@ import { Reservation } from '../models/reservation';
   templateUrl: './reservation-list.html',
   styleUrl: './reservation-list.css',
 })
-export class ReservationList {
-  reservations: Reservation[];
+export class ReservationList implements OnInit {
+  reservations: Reservation[] = [];
 
-  constructor(private reservationService: ReservationService) {
-    this.reservations = this.reservationService.getReservations();
+  constructor(private reservationService: ReservationService) {}
+
+  ngOnInit() {
+    this.reservationService.getReservations().subscribe(data => {
+      this.reservations = data;
+    });
   }
 }

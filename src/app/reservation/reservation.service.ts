@@ -1,46 +1,36 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { Reservation } from '../models/reservation';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ReservationService {
 
-  private reservations: Reservation[] = [];
+  private readonly apiUrl = `${environment.apiUrl}/reservations`;
 
-  constructor() {
-    let savedReservations = localStorage.getItem('reservations');
-    this.reservations = savedReservations ? JSON.parse(savedReservations) : [];
-   }
+  constructor(private http: HttpClient) {}
 
-  getReservations(): Reservation[] {
-    return this.reservations;
+  getReservations(): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(this.apiUrl);
   }
 
-  getReservationById(id: string): Reservation | undefined {
-    return this.reservations.find(r => r.id === id);
+  getReservationById(id: string): Observable<Reservation> {
+    return this.http.get<Reservation>(`${this.apiUrl}/${id}`);
   }
 
-  addReservation(reservation: Reservation): void {
-    this.reservations.push(reservation);
-    this.persist();
+  addReservation(reservation: Reservation): Observable<Reservation> {
+    return this.http.post<Reservation>(this.apiUrl, reservation);
   }
 
-  updateReservation(id: string, updated: Partial<Reservation>): void {
-    const index = this.reservations.findIndex(r => r.id === id);
-    if (index !== -1) {
-      this.reservations[index] = { ...this.reservations[index], ...updated };
-      this.persist();
-    }
+  updateReservation(id: string, updated: Partial<Reservation>): Observable<Reservation> {
+    return this.http.patch<Reservation>(`${this.apiUrl}/${id}`, updated);
   }
 
-  deleteReservation(id: string): void {
-    this.reservations = this.reservations.filter(r => r.id !== id);
-    this.persist();
-  }
-
-  private persist(): void {
-    localStorage.setItem('reservations', JSON.stringify(this.reservations));
+  deleteReservation(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
 }
