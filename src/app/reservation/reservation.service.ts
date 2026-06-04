@@ -23,17 +23,24 @@ export class ReservationService {
 
   addReservation(reservation: Reservation): void {
     this.reservations.push(reservation);
+    this.persist();
   }
 
   updateReservation(id: string, updated: Partial<Reservation>): void {
     const index = this.reservations.findIndex(r => r.id === id);
     if (index !== -1) {
       this.reservations[index] = { ...this.reservations[index], ...updated };
+      this.persist();
     }
   }
 
   deleteReservation(id: string): void {
     this.reservations = this.reservations.filter(r => r.id !== id);
+    this.persist();
+  }
+
+  private persist(): void {
+    localStorage.setItem('reservations', JSON.stringify(this.reservations));
   }
 
 }
