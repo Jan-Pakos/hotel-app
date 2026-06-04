@@ -1,7 +1,9 @@
 <div class="reservation-list">
   <h2>Reservations</h2>
 
-  @if (reservations.length === 0) {
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  } @else if (reservations().length === 0) {
     <p class="empty-state">No reservations found.</p>
   } @else {
     <table>
@@ -12,16 +14,18 @@
           <th>Room</th>
           <th>Check-In</th>
           <th>Check-Out</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
-        @for (reservation of reservations; track reservation.id) {
+        @for (reservation of reservations(); track reservation.id) {
           <tr>
             <td>{{ reservation.guestName }}</td>
             <td>{{ reservation.guestEmail }}</td>
             <td>{{ reservation.roomNumber }}</td>
             <td>{{ reservation.checkInDate | date:'mediumDate' }}</td>
             <td>{{ reservation.checkOutDate | date:'mediumDate' }}</td>
+            <td><button (click)="deleteReservation(reservation.id)">Delete</button></td>
           </tr>
         }
       </tbody>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReservationService } from '../reservation/reservation.service';
 import { Reservation } from '../models/reservation';
@@ -10,13 +10,21 @@ import { Reservation } from '../models/reservation';
   styleUrl: './reservation-list.css',
 })
 export class ReservationList implements OnInit {
-  reservations: Reservation[] = [];
+  reservations = signal<Reservation[]>([]);
+  error = signal<string | null>(null);
 
   constructor(private reservationService: ReservationService) {}
 
   ngOnInit() {
-    this.reservationService.getReservations().subscribe(data => {
-      this.reservations = data;
+    this.reservationService.getReservations().subscribe({
+      next: data => this.reservations.set(data),
+      error: err => this.error.set(`Failed to load reservations: ${err.status} ${err.message}`)
+    });
+  }
+
+  deleteReservation(id: string) {
+    this.reservationService.deleteReservation(id).subscribe(() => {
+      this.reservations.update(list => list.filter(r => r.id !== id));
     });
   }
 }
