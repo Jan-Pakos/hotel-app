@@ -33,15 +33,18 @@ export class ReservationForm implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.editId.set(id);
-      this.reservationService.getReservationById(id).subscribe(reservation => {
-        const toDateInput = (d: any) => d ? new Date(d).toISOString().split('T')[0] : '';
-        this.reservationForm.patchValue({
-          guestEmail: reservation.guestEmail,
-          guestName: reservation.guestName,
-          checkInDate: toDateInput(reservation.checkInDate),
-          checkOutDate: toDateInput(reservation.checkOutDate),
-          roomNumber: reservation.roomNumber,
-        });
+      this.reservationService.getReservationById(id).subscribe({
+        next: reservation => {
+          const toDateInput = (d: any) => d ? new Date(d).toISOString().split('T')[0] : '';
+          this.reservationForm.patchValue({
+            guestEmail: reservation.guestEmail,
+            guestName: reservation.guestName,
+            checkInDate: toDateInput(reservation.checkInDate),
+            checkOutDate: toDateInput(reservation.checkOutDate),
+            roomNumber: reservation.roomNumber,
+          });
+        },
+        error: err => this.submitError.set(`Failed to load reservation: ${err.status} ${err.message}`)
       });
     }
   }
