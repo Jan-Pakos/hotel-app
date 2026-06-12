@@ -15,5 +15,9 @@ export const routes: Routes = [
   {
     path: 'reservations/new',
     component: ReservationForm
+  },
+  {
+    path: 'reservations/edit/:id',
+    component: ReservationForm
   }
 ];

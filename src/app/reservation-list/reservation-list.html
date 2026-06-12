@@ -26,6 +26,7 @@
             <td>{{ reservation.checkInDate | date:'mediumDate' }}</td>
             <td>{{ reservation.checkOutDate | date:'mediumDate' }}</td>
             <td><button (click)="deleteReservation(reservation.id)">Delete</button></td>
+            <td><button (click)="editReservation(reservation.id)">Edit</button></td>
           </tr>
         }
       </tbody>

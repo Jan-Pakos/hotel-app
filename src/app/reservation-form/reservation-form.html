@@ -1,5 +1,5 @@
 <div class="form-container">
-  <h2>New Reservation</h2>
+  <h2>{{ editId() ? 'Edit Reservation' : 'New Reservation' }}</h2>
   <form class="reservation-form" [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="guestName">Guest Name</label>
@@ -40,6 +40,9 @@
       <input type="number" id="roomNumber" formControlName="roomNumber" placeholder="Enter room number">
     </div>
 
-    <button type="submit" [disabled]="reservationForm.invalid">Create Reservation</button>
+    @if (submitError()) {
+      <p class="error">{{ submitError() }}</p>
+    }
+    <button type="submit">{{ editId() ? 'Update Reservation' : 'Create Reservation' }}</button>
   </form>
 </div>

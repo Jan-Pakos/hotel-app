@@ -2,10 +2,11 @@ import { Component, OnInit, signal } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { ReservationService } from '../reservation/reservation.service';
 import { Reservation } from '../models/reservation';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-reservation-list',
-  imports: [DatePipe],
+  imports: [DatePipe, RouterModule],
   templateUrl: './reservation-list.html',
   styleUrl: './reservation-list.css',
 })
@@ -13,7 +14,7 @@ export class ReservationList implements OnInit {
   reservations = signal<Reservation[]>([]);
   error = signal<string | null>(null);
 
-  constructor(private reservationService: ReservationService) {}
+  constructor(private reservationService: ReservationService, private router: Router) {}
 
   ngOnInit() {
     this.reservationService.getReservations().subscribe({
@@ -26,5 +27,9 @@ export class ReservationList implements OnInit {
     this.reservationService.deleteReservation(id).subscribe(() => {
       this.reservations.update(list => list.filter(r => r.id !== id));
     });
+  }
+
+  editReservation(id: string) {
+    this.router.navigate(['/reservations/edit', id]);
   }
 }
